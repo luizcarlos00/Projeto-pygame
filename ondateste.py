@@ -23,21 +23,23 @@ explosao = pygame.USEREVENT +3
 pygame.time.set_timer(refletir, 12)
 pygame.time.set_timer(limpar,200)
 while True:
-    posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
+    
     relogio.tick(60)
     for event in pygame.event.get():
             if event.type == refletir:
-                print("mar")
                 reflexo()
             if event.type == limpar:
                 tela.fill((0,0,255))
                 construir_grid(tela,1200)
                 pygame.display.flip()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pygame.time.set_timer(explosao, 10)
-                a= 5
+                posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
+                pygame.time.set_timer(explosao, 15,25)
+                centro = ((pygame.mouse.get_pos()[0]//100)*100+50,(pygame.mouse.get_pos()[1]//100)*100+50)
+                a= 0
 
             
             if event.type == explosao:
-                 a+=5
-                 pygame.draw.circle(pygame.display.get_surface(),(255,255,255),(posicao[0],posicao[1]),(100),(5))
+                 a+=2
+                 pygame.draw.circle(pygame.display.get_surface(),(255,255,255),(centro[0],centro[1]),(a),(5))
+                 

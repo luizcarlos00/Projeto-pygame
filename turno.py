@@ -18,7 +18,7 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                 for marcado in marcadosJ1:
                     pygame.draw.rect(pygame.display.get_surface(),(0,0,0),(marcado[0]*100,marcado[1]*100,100,100))
                     pygame.display.flip()
-                if posicao not in marcadosJ1 and posicao[0] > 2:
+                if posicao not in marcadosJ1 and posicao[0] >= 2:
                     construir_grid(pygame.display.get_surface(),1200)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
                     pygame.display.flip()
@@ -45,7 +45,7 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                 for marcado in marcadosJ2:
                     pygame.draw.rect(pygame.display.get_surface(),(0,0,0),(marcado[0]*100,marcado[1]*100,100,100))
                     pygame.display.flip()
-                if posicao not in marcadosJ2 and posicao[0] > 2:
+                if posicao not in marcadosJ2 and posicao[0] >= 2:
                     construir_grid(pygame.display.get_surface(),1200)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
                     pygame.display.flip()
