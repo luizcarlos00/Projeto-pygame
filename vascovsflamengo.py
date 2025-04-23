@@ -7,16 +7,22 @@ from turno import turno
 
 def main():
     pygame.init()
-    tela=pygame.display.set_mode((1200,1000))#definição de tela
-    relogio = pygame.time.Clock()
+    
+    musica_menu=pygame.mixer.music.load("musica_fundo_menu.mp3")
+    musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.mp3")
+    
     jogador1 = []
     jogador2 = []
     marcadosJ1=[]
     marcadosJ2=[]
     vencedor = "?"
+    
+    tela=pygame.display.set_mode((1200,1000))#definição de tela
+    relogio = pygame.time.Clock()
     tela.blit(pygame.image.load("tela_fundo.jpg"),(0,0))
     construir_grid(tela,1200)#função que desenha e e faz a tupla dos quadrados
     pygame.display.flip()
+    
     while True:
         relogio.tick(60)
         for event in pygame.event.get():#sair 
