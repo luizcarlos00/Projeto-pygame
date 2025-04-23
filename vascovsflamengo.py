@@ -23,7 +23,7 @@ def main():
     
     tela=pygame.display.set_mode((1200,1000))#definição de tela
     relogio = pygame.time.Clock()
-    tela.blit(pygame.image.load("tela_fundo.jpg"),(0,0))
+    tela.blit(pygame.image.load("tela_fundo_menu.jpg"),(0,0))
     construir_grid(tela,1200)#função que desenha e e faz a tupla dos quadrados
     pygame.display.flip()
     
