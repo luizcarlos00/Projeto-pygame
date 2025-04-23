@@ -10,6 +10,10 @@ def main():
     
     musica_menu=pygame.mixer.music.load("musica_fundo_menu.mp3")
     musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.mp3")
+    bomba_agua=pygame.mixer.Sound.load("agua.mp3")
+    bomba_barco=pygame.mixer.Sound.load("quedabomba.mp3")
+
+
     
     jogador1 = []
     jogador2 = []
