@@ -18,8 +18,8 @@ def posicionar( jogador=[]):
                     vertical = not vertical
                     print(vertical)
             posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
-
-            if vertical:
+            
+            if vertical: #ajustar posição do meio
                 if posicao[0] >= 2 and posicao[1]+tamanho-1 < 10 and (posicao[0],posicao[1]+tamanho-1) not in marcados and posicao not in marcados and posicao[1]+tamanho <= 10 :
                     construir_grid(pygame.display.get_surface(),1200)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,tamanho*100),(2))
