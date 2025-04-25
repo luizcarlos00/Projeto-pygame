@@ -10,11 +10,13 @@ from turno import turno
 def main():
     pygame.init()
     
+
     musica_menu=pygame.mixer.music.load("audio/musica_fundo.wav")
     #musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.wav")
     bomba_agua=pygame.mixer.Sound("audio/acerto_agua.wav")
     bomba_barco=pygame.mixer.Sound("audio/acerto_barco.wav")
     
+
 
     
     jogador1 = []
@@ -29,6 +31,7 @@ def main():
     tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
     construir_grid(tela,1200)#função que desenha e e faz a tupla dos quadrados
     pygame.display.flip()
+
 
     barco1=pygame.image.load("imagens/barco1.png")
     barco2_v=pygame.image.load("imagens/barco2_v.png")
@@ -50,19 +53,28 @@ def main():
             if event.type== QUIT:
                 pygame.quit()
                 exit()
-                
-            if jogador1 == [] and jogador2 == []:
-                jogador1 = posicionar(jogador1)
-                tela.fill((0,0,255))
-                #tela.blit(pygame.image.load(imagens.tela_fundo_menu.jpg),(0,0))
-                construir_grid(tela, 1200)
-                pygame.display.flip
 
-                jogador2 = posicionar(jogador2)
-                tela.fill((0,0,255))
-                #tela.blit(pygame.image.load(imagens.tela_fundo.jpg),(0,0))
-                construir_grid(tela, 1200)
-                pygame.display.flip
+            if jogar==0:
+                if event.type==MOUSEBUTTONDOWN:
+                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//100)==8:#iniciar o jogo 
+                            jogar=1
+                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//10)<=96 and (pygame.mouse.get_pos()[1]//10)>=90:#menu instruções depois fazer o resto
+                            instrucoes=1
+
+            if jogar==1:
+                if jogador1 == [] and jogador2 == []:
+                    jogador1 = posicionar(jogador1)
+                    tela.fill((0,0,255))
+                    construir_grid(tela, 1200)
+                    pygame.display.flip
+        
+                    jogador2 = posicionar(jogador2)
+                    tela.fill((0,0,255))
+                    construir_grid(tela, 1200)
+                    pygame.display.flip
+
+                
+            
                 
                             
             else:
@@ -70,17 +82,28 @@ def main():
                 while vencedor == "?":
                     jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2 = turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2)
                     
+
                     
-                    
-                    
+                  
                     if len(condicaoJ1) == 10:
                         vencedor = "jogador1"
                     
                     
                     if len(condicaoJ2) == 10:
                         vencedor = "jogador2"
-                print(vencedor)
-            
+                print(vencedor)    
+                
+                
+            if jogar==2:
+                tela.blit(pygame.image.load("tela_creditos.png")
+                          if event.key==K_j:
+                                jogar=0
+                
+
+
+        
+       
+
         pygame.display.flip()
 
 
