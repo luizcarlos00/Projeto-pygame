@@ -13,8 +13,8 @@ def main():
     bomba_agua=pygame.mixer.Sound("agua.mp3")
     bomba_barco=pygame.mixer.Sound("quedabomba.mp3")
 
-
-    
+    intrucoes=0
+    jogar=0
     jogador1 = []
     jogador2 = []
     marcadosJ1=[]
@@ -47,7 +47,14 @@ def main():
             if event.type== QUIT:
                 pygame.quit()
                 exit()
-                
+            if jogar==0:
+                if event.type==MOUSEBUTTONDOWN:
+                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//100)==8:#iniciar o jogo 
+                            jogar=1
+                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//10)<=96 and (pygame.mouse.get_pos()[1]//10)>=90:#menu instruções depois fazer o resto
+                            instrucoes=1
+
+            if jogar==1 
             if jogador1 == [] and jogador2 == []:
                 jogador1 = posicionar(jogador1)
                 tela.blit(pygame.image.load("tela_fundo.jpg"),(0,0))
