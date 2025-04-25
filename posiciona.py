@@ -25,29 +25,35 @@ def colisaoY(marcados, posicao,tamanho):
             return True
     return False
 
-def colocarX(posX,posY,tam):
+def colocarX(posX,posY,tam,img):
     selecionados = []
     for x in range(posX,posX+tam):
         selecionados.append((x,posY)) 
-    pygame.draw.rect(pygame.display.get_surface(),(0,0,0),(posX*100,posY*100,100*tam,100))
+    pygame.display.get_surface().blit(img,(posX*100,posY*100))
     pygame.display.flip()
     return selecionados
 
-def colocarY(posX,posY,tam):
+def colocarY(posX,posY,tam,img):
     selecionados = []
     for y in range(posY,posY+tam):
         selecionados.append((posX,y)) 
-    pygame.draw.rect(pygame.display.get_surface(),(0,0,0),(posX*100,posY*100,100,tam*100))
+    pygame.display.get_surface().blit(img,(posX*100,posY*100))
     pygame.display.flip()
-    print(selecionados)
     return selecionados
     
 def posicionar( jogador=[]):
+    barco1=pygame.image.load("imagens/barco1.png")
+    barco2_v=pygame.image.load("imagens/barco2_v.png")
+    barco2_h=pygame.image.load("imagens/barco2_h.png")
+    barco3_v=pygame.image.load("imagens/barco3_v.png")
+    barco3_h=pygame.image.load("imagens/barco3_h.png")
+    barco4_h=pygame.image.load("imagens/barco4_h.png")
+    barco4_v=pygame.image.load("imagens/barco4_v.png")
+
     marcados = []
     tamanho = 4
     vertical = False
     while len(jogador) < 10:
-
         for barco in jogador:
             for coord in barco:
                 if coord not in marcados:
@@ -63,40 +69,56 @@ def posicionar( jogador=[]):
 
             posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
             
-            if vertical: #ajustar posição do meio
+            if vertical: 
+                if tamanho == 4:
+                    imagem = barco4_v
+                elif tamanho == 3:
+                    imagem = barco3_v
+                elif tamanho == 2:
+                    imagem = barco2_v
+                else:
+                    imagem = barco1
+
                 if posicao[0] >= 2 and not colisaoY(marcados,posicao,tamanho) and posicao[1]+tamanho <= 10 :
                     marcar(posicao[0],posicao[1],tamanho,vertical)
-                    if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                         if event.type==pygame.MOUSEBUTTONDOWN:
-                            jogador.append(colocarY(posicao[0],posicao[1],tamanho))
-                            if len(jogador) in [1,3,6]:
-                                tamanho -=1
+                    if event.type==pygame.MOUSEBUTTONDOWN:
+                        jogador.append(colocarY(posicao[0],posicao[1],tamanho,imagem))
+                        if len(jogador) in [1,3,6]:
+                            tamanho -=1
                         
                             
                 elif posicao[0] >=2 and posicao[1] in range(11-tamanho,11) and not colisaoY(marcados,(posicao[0],10-tamanho),tamanho) :
                     marcar(posicao[0],10-tamanho,tamanho,vertical)
-                    if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                         if event.type==pygame.MOUSEBUTTONDOWN:
-                            jogador.append(colocarY(posicao[0],10-tamanho,tamanho))
-                            if len(jogador) in [1,3,6]:
-                                tamanho -=1
+                    if event.type==pygame.MOUSEBUTTONDOWN:
+                        jogador.append(colocarY(posicao[0],10-tamanho,tamanho,imagem))
+                        if len(jogador) in [1,3,6]:
+                            tamanho -=1
 
                 elif colisaoY(marcados,posicao,tamanho):
                     construir_grid(pygame.display.get_surface(),1200)
                     pygame.display.flip()
 
             else:
+                if tamanho == 4:
+                    imagem = barco4_h
+                elif tamanho == 3:
+                    imagem = barco3_h
+                elif tamanho == 2:
+                    imagem = barco2_h
+                else:
+                    imagem = barco1
+
                 if posicao[0] in range(2,13-tamanho) and not colisaoX(marcados,posicao,tamanho) :
                         marcar(posicao[0],posicao[1],tamanho,vertical)
                         if event.type==pygame.MOUSEBUTTONDOWN:
-                            jogador.append(colocarX(posicao[0],posicao[1],tamanho))
+                            jogador.append(colocarX(posicao[0],posicao[1],tamanho,imagem))
                             if len(jogador) in [1,3,6]:
                                 tamanho -=1
                             
                 elif posicao[0] in range(13-tamanho,13) and not colisaoX(marcados,(12-tamanho,posicao[1]),tamanho):
                     marcar(12-tamanho,posicao[1],tamanho,vertical)
                     if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                        jogador.append(colocarX(12-tamanho,posicao[1],tamanho))
+                        jogador.append(colocarX(12-tamanho,posicao[1],tamanho,imagem))
                         if len(jogador) in [1,3,6]:
                             tamanho -=1
                 elif colisaoX(marcados,posicao,tamanho):
@@ -109,7 +131,7 @@ if __name__ == "__main__":
     pygame.init()
     tela=pygame.display.set_mode((1200,1000))#definição de tela
     construir_grid(tela,1200)
-    tela.blit(pygame.image.load("tela_fundo.jpg"),(0,0))
+    tela.fill((0,0,255))
     pygame.display.flip()
     while True:
         for event in pygame.event.get():#sair 
