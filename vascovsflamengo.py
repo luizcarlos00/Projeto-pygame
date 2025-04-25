@@ -101,6 +101,15 @@ def main():
                 if event.type == pygame.KEYDOWN :               
                     if event.key == pygame.K_j:
                         jogar=0
+                        jogador1 = []
+                        jogador2 = []
+                        marcadosJ1=[]
+                        marcadosJ2=[]
+                        vencedor = "?"
+                        condicaoJ1=[]
+                        condicaoJ2=[]
+                        tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
+    
                 
 
 
