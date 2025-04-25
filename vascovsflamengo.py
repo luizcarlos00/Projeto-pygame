@@ -95,7 +95,7 @@ def main():
                 
                 
             if jogar==2:
-                tela.blit(pygame.image.load("tela_creditos.png")
+                tela.blit(pygame.image.load("tela_creditos.png"),(0,0))
                           if event.key==K_j:
                                 jogar=0
                 
