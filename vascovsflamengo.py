@@ -9,7 +9,7 @@ def main():
     pygame.init()
     
     musica_menu=pygame.mixer.music.load("musica_fundo_menu.mp3")
-    musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.mp3")
+    #musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.mp3")
     bomba_agua=pygame.mixer.Sound.load("agua.mp3")
     bomba_barco=pygame.mixer.Sound.load("quedabomba.mp3")
 
@@ -23,11 +23,12 @@ def main():
     
     tela=pygame.display.set_mode((1200,1000))#definição de tela
     relogio = pygame.time.Clock()
-    tela.blit(pygame.image.load("tela_fundo_menu.jpg"),(0,0))
+    tela.blit(pygame.image.load("tela_fundo_menu.png"),(0,0))
     construir_grid(tela,1200)#função que desenha e e faz a tupla dos quadrados
     pygame.display.flip()
     
     while True:
+        pygame.mixer.music.play(-1)
         relogio.tick(60)
         for event in pygame.event.get():#sair 
             if event.type== QUIT:
