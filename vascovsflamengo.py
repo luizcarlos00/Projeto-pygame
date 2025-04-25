@@ -26,6 +26,19 @@ def main():
     tela.blit(pygame.image.load("tela_fundo_menu.png"),(0,0))
     construir_grid(tela,1200)#função que desenha e e faz a tupla dos quadrados
     pygame.display.flip()
+
+    barco1=pygame.image.load("barco_1.png")
+    barco2_v=pygame.image.load("barco2_v.png")
+    barco2_h=pygame.image.load("barco2_h.png")
+    barco3_v=pygame.image.load("barco3_v.png")
+    barco3_h=pygame.image.load("barco3_h.png")
+    barco4_h=pygame.image.load("barco4_h.png")
+    barco4_v=pygame.image.load("barco4_h.png")
+
+
+
+
+
     
     while True:
         pygame.mixer.music.play(-1)
