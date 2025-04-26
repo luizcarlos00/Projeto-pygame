@@ -29,7 +29,7 @@ def main():
     jogar = 0
     tela=pygame.display.set_mode((1200,1000))#definição de tela
     relogio = pygame.time.Clock()
-    tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
+    tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
     pygame.display.flip()
 
 
@@ -62,8 +62,16 @@ def main():
                             pygame.display.flip
 
                     if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//10)<=96 and (pygame.mouse.get_pos()[1]//10)>=90:#menu instruções depois fazer o resto
-                            instrucoes=1
-
+                            jogar=5
+            if jogar==5:
+                tela.blit(pygame.image.load("imagens/fundo_instruções.png"),(0,0))
+                pygame.display.flip()
+                if event.type==KEYDOWN:
+                    if event.key == pygame.K_m:
+                        jogar=0
+                        tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
+                        pygame.display.flip()
+                
             if jogar==1:
                 jogador1 = posicionar(jogador1)
                 tela.fill((0,0,255))
@@ -108,7 +116,7 @@ def main():
                         vencedor = "?"
                         condicaoJ1=[]
                         condicaoJ2=[]
-                        tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
+                        tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
     
                 
 
