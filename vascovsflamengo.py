@@ -102,12 +102,18 @@ def main():
                     if len(condicaoJ2) == 10:
                         vencedor = "jogador 2"
                 print(vencedor)    
+                #jogar = 3
+                texto_vitoria=fonte.render(f"{vencedor}",True,(100,50,255))
+                tela.blit(pygame.image.load("imagens/fundo_parabéns.png"),(0,0))
+                pygame.display.flip()
+                tela.blit(texto_vitoria,(430,450))
+                pygame.display.flip()
+                pygame.time.delay(5000)
                 jogar = 3
-            texto_vitoria=fonte.render(f"{vencedor}",True,(100,50,255))
             
             if jogar==3:
                 tela.blit(pygame.image.load("imagens/tela_creditos.png"),(0,0))
-                
+                pygame.display.flip
                 
                 if event.type == pygame.KEYDOWN :               
                     if event.key == pygame.K_j:
