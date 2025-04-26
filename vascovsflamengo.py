@@ -27,14 +27,14 @@ def main():
     condicaoJ1=[]
     condicaoJ2=[]
     jogar = 0
-    tela=pygame.display.set_mode((1200,1000))#definição de tela
-    relogio = pygame.time.Clock()
     transicao = pygame.USEREVENT
     cont_transicoes = 0
-    tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
+    tela=pygame.display.set_mode((1200,1000))#definição de tela
+    relogio = pygame.time.Clock()
+    tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
     pygame.display.flip()
 
-
+    fonte = pygame.font.SysFont("Britannic Bold", 105)
     barco1=pygame.image.load("imagens/barco1.png")
     barco2_v=pygame.image.load("imagens/barco2_v.png")
     barco2_h=pygame.image.load("imagens/barco2_h.png")
@@ -42,7 +42,7 @@ def main():
     barco3_h=pygame.image.load("imagens/barco3_h.png")
     barco4_h=pygame.image.load("imagens/barco4_h.png")
     barco4_v=pygame.image.load("imagens/barco4_h.png")
-
+    
 
 
 
@@ -57,22 +57,30 @@ def main():
                 exit()
 
             if jogar==0:
-                if event.type== MOUSEBUTTONDOWN:
+                if event.type==MOUSEBUTTONDOWN:
                     if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//100)==8:#iniciar o jogo 
                             tela.fill((0,0,255))
                             tela.blit(pygame.image.load("imagens/J1_posiciona.png"),(0,0))
                             pygame.time.set_timer(transicao, 3000,1)
                             cont_transicoes +=1
                             pygame.display.flip
-
-                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//10)<=96 and (pygame.mouse.get_pos()[1]//10)>=90:#menu instruções depois fazer o resto
-                            instrucoes=1
                 if event.type == transicao:
                     tela.fill((0,0,255))
                     construir_grid(tela, 1200)
                     pygame.display.flip
                     jogar = 1
 
+                    if (pygame.mouse.get_pos()[0]//100)<=3 and (pygame.mouse.get_pos()[1]//10)<=96 and (pygame.mouse.get_pos()[1]//10)>=90:#menu instruções depois fazer o resto
+                            jogar=5
+            if jogar==5:
+                tela.blit(pygame.image.load("imagens/fundo_instruções.png"),(0,0))
+                pygame.display.flip()
+                if event.type==KEYDOWN:
+                    if event.key == pygame.K_m:
+                        jogar=0
+                        tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
+                        pygame.display.flip()
+                
             if jogar==1:
                 if jogador1 == []:
 
@@ -93,8 +101,6 @@ def main():
                     cont_transicoes +=1
                     pygame.display.flip             
                     jogar = 2
-    
-                
 
                 
             
@@ -107,7 +113,7 @@ def main():
                     while vencedor == "?":
                         jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2 = turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2)
                         n +=1
-                        print("n")
+                        print(n)
 
                         
                     
@@ -117,11 +123,20 @@ def main():
                         
                         if len(condicaoJ2) == 10:
                             vencedor = "jogador2"
-                    print(vencedor)    
+                    print(vencedor) 
+                if vencedor != "?":
+                    texto_vitoria=fonte.render(f"{vencedor}",True,(100,50,255))
+                    tela.blit(pygame.image.load("imagens/fundo_parabéns.png"),(0,0))
+                    pygame.display.flip()
+                    tela.blit(texto_vitoria,(430,450))
+                    pygame.display.flip()
+                    pygame.time.delay(5000)
                     jogar = 3
-                
+            
             if jogar==3:
                 tela.blit(pygame.image.load("imagens/tela_creditos.png"),(0,0))
+                pygame.display.flip
+                
                 if event.type == pygame.KEYDOWN :               
                     if event.key == pygame.K_j:
                         jogar=0
@@ -132,7 +147,7 @@ def main():
                         vencedor = "?"
                         condicaoJ1=[]
                         condicaoJ2=[]
-                        tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1200,1000)),(0,0))
+                        tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
     
                 
 

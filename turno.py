@@ -68,12 +68,12 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                             marcadosJ1.append(posicao)
                                                                
                         j1OK = True
-            if event.type == transicao:
+            if event.type == transicao and j1OK:
                 vez = not vez
                 pygame.display.get_surface().fill((0,0,255))
                 construir_grid(pygame.display.get_surface(),1200)
                 pygame.display.flip()
-            if not vez:
+            if not vez and not j2OK:
                 posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
                 if posicao not in marcadosJ2 and posicao[0] >= 2:
                     construir_grid(pygame.display.get_surface(),1200)
@@ -107,6 +107,8 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                         pygame.time.set_timer(transicao,3000,1)
                         pygame.display.flip()
                         cont_transicoes +=1
+                        vez = not vez
+                        j2OK = True
                         for barco in jogador1:
                             if posicao in barco:
                                 condicaoJ2.append(barco)
@@ -116,12 +118,11 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
 
                         if posicao not in marcadosJ2:
                             marcadosJ2.append(posicao)
-            if event.type == transicao and cont_transicoes == 2:
-                j2OK = True
+            if event.type == transicao and j1OK and j2OK:
                 pygame.display.get_surface().fill((0,0,255))
                 pygame.display.flip()
-                    
+                return jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2
                      
-        if j1OK and j2OK:
-            return jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2
+
+            
             
