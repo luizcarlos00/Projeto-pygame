@@ -29,10 +29,10 @@ def main():
     jogar = 0
     tela=pygame.display.set_mode((1200,1000))#definição de tela
     relogio = pygame.time.Clock()
-    tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
+    tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
     pygame.display.flip()
 
-
+    fonte = pygame.font.SysFont("Britannic Bold", 105)
     barco1=pygame.image.load("imagens/barco1.png")
     barco2_v=pygame.image.load("imagens/barco2_v.png")
     barco2_h=pygame.image.load("imagens/barco2_h.png")
@@ -40,7 +40,7 @@ def main():
     barco3_h=pygame.image.load("imagens/barco3_h.png")
     barco4_h=pygame.image.load("imagens/barco4_h.png")
     barco4_v=pygame.image.load("imagens/barco4_h.png")
-
+    
 
 
 
@@ -69,7 +69,7 @@ def main():
                 if event.type==KEYDOWN:
                     if event.key == pygame.K_m:
                         jogar=0
-                        tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
+                        tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
                         pygame.display.flip()
                 
             if jogar==1:
@@ -96,16 +96,19 @@ def main():
                     
                   
                     if len(condicaoJ1) == 10:
-                        vencedor = "jogador1"
+                        vencedor = "jogador 1"
                     
                     
                     if len(condicaoJ2) == 10:
-                        vencedor = "jogador2"
+                        vencedor = "jogador 2"
                 print(vencedor)    
                 jogar = 3
-                
+            texto_vitoria=fonte.render(f"{vencedor}",True,(100,50,255))
+            
             if jogar==3:
                 tela.blit(pygame.image.load("imagens/tela_creditos.png"),(0,0))
+                
+                
                 if event.type == pygame.KEYDOWN :               
                     if event.key == pygame.K_j:
                         jogar=0
@@ -116,7 +119,7 @@ def main():
                         vencedor = "?"
                         condicaoJ1=[]
                         condicaoJ2=[]
-                        tela.blit(pygame.image.load("imagens/fundoa.png"),(0,0))
+                        tela.blit(pygame.image.load("imagens/tela_fundo_menu.png"),(0,0))
     
                 
 
