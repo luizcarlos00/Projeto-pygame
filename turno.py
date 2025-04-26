@@ -5,7 +5,8 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
     j1OK = False
     j2OK= False
     vez = True
-
+    transicao = pygame.USEREVENT
+    cont_transicoes = 0
     barco1=pygame.image.load("imagens/barco1.png")
     barco2_v=pygame.image.load("imagens/barco2_v.png")
     barco2_h=pygame.image.load("imagens/barco2_h.png")
@@ -19,60 +20,67 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
             if event.type== pygame.QUIT:
                 pygame.quit()
                 exit()
-            if vez :
+            if vez and j1OK == False :
                 
                 posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
-                construir_grid(pygame.display.get_surface(),1200)
-                if len(condicaoJ1) > 0:
-                    for barco in condicaoJ1:
-                        if len(barco) == 4:
-                            if barco[0][0] - barco[1][0] == 0:
-                                imagem = barco4_v
-                            else:
-                                imagem = barco4_h
-                        elif len(barco) == 3:
-                            if barco[0][0] - barco[1][0] == 0:
-                                imagem = barco3_v
-                            else:
-                                imagem = barco3_h
-                        elif len(barco) == 2:
-                            if barco[0][0] - barco[1][0] == 0:
-                                imagem = barco2_v
-                            else:
-                                imagem = barco2_h
-                        else:
-                            imagem = barco1
-                        pygame.display.get_surface().blit(imagem,(barco[0][0]*100,barco[0][1]*100))
-                pygame.display.flip()
 
                 if posicao not in marcadosJ1 and posicao[0] >= 2:
-                    construir_grid(pygame.display.get_surface(),1200)
+                    construir_grid(pygame.display.get_surface(),1198)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
+
+                    if len(condicaoJ1) > 0:
+                        for barco in condicaoJ1:
+                            if len(barco) == 4:
+                                if barco[0][0] - barco[1][0] == 0:
+                                    imagem = barco4_v
+                                else:
+                                    imagem = barco4_h
+                            elif len(barco) == 3:
+                                if barco[0][0] - barco[1][0] == 0:
+                                    imagem = barco3_v
+                                else:
+                                    imagem = barco3_h
+                            elif len(barco) == 2:
+                                if barco[0][0] - barco[1][0] == 0:
+                                    imagem = barco2_v
+                                else:
+                                    imagem = barco2_h
+                            else:
+                                imagem = barco1
+                            
+                            pygame.display.get_surface().blit(imagem,(barco[0][0]*100,barco[0][1]*100))
                     pygame.display.flip()
 
-                if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                    for barco in jogador2:
-                        if posicao in barco:
-                            condicaoJ1.append(barco)
-                            for coord in barco:
-                                marcadosJ1.append(coord)
-                            break
-                        
-                    if posicao not in marcadosJ1:
-                        marcadosJ1.append(posicao)
+                    if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
+                        pygame.display.get_surface().blit(pygame.image.load("imagens/J2_vez.png"),(0,0))
+                        transicao = pygame.USEREVENT + cont_transicoes
+                        pygame.time.set_timer(transicao,3000,1)
+                        pygame.display.flip()
+                        cont_transicoes +=1
+                        for barco in jogador2:
+                            if posicao in barco:
+                                condicaoJ1.append(barco)
+                                for coord in barco:
+                                    marcadosJ1.append(coord)
+                                break
+                            
+                        if posicao not in marcadosJ1:
+                            marcadosJ1.append(posicao)
                                                                
-                    j1OK = True
-                    vez = not vez
-                   # pygame.display.get_surface().blit(pygame.image.load("tela_fundo.jpg"),(0,0))
-                    pygame.display.get_surface().fill((0,0,255))
-                
-            else:
-                
-                posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
+                        j1OK = True
+            if event.type == transicao:
+                vez = not vez
+                pygame.display.get_surface().fill((0,0,255))
                 construir_grid(pygame.display.get_surface(),1200)
-                if len(condicaoJ1) > 0:
-                    for barco in condicaoJ2:
-                        if barco != None:    
+                pygame.display.flip()
+            if not vez:
+                posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
+                if posicao not in marcadosJ2 and posicao[0] >= 2:
+                    construir_grid(pygame.display.get_surface(),1200)
+                    pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
+                    
+                    if len(condicaoJ2) > 0:
+                        for barco in condicaoJ2:
                             if len(barco) == 4:
                                 if barco[0][0] - barco[1][0] == 0:
                                     imagem = barco4_v
@@ -91,29 +99,29 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                             else:
                                 imagem = barco1
                         pygame.display.get_surface().blit(imagem,(barco[0][0]*100,barco[0][1]*100))
-                pygame.display.flip()
-                if posicao not in marcadosJ2 and posicao[0] >= 2:
-                    construir_grid(pygame.display.get_surface(),1200)
-                    pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
                     pygame.display.flip()
 
-                if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                    
-                    for barco in jogador1:
-                        if posicao in barco:
-                            condicaoJ2.append(barco)
-                            for coord in barco:
-                                marcadosJ2.append(coord)
-                            break
+                    if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
+                        pygame.display.get_surface().blit(pygame.image.load("imagens/J1_vez.png"),(0,0))
+                        transicao = pygame.USEREVENT + cont_transicoes
+                        pygame.time.set_timer(transicao,3000,1)
+                        pygame.display.flip()
+                        cont_transicoes +=1
+                        for barco in jogador1:
+                            if posicao in barco:
+                                condicaoJ2.append(barco)
+                                for coord in barco:
+                                    marcadosJ2.append(coord)
+                                break
 
-                    if posicao not in marcadosJ2:
-                        marcadosJ2.append(posicao)
+                        if posicao not in marcadosJ2:
+                            marcadosJ2.append(posicao)
+            if event.type == transicao and cont_transicoes == 2:
+                j2OK = True
+                pygame.display.get_surface().fill((0,0,255))
+                pygame.display.flip()
                     
-                    
-                    j2OK = True
-                    vez = not vez
-                    #pygame.display.get_surface().blit(pygame.image.load("tela_fundo.jpg"),(0,0))
-                    pygame.display.get_surface().fill((0,0,255))  
+                     
         if j1OK and j2OK:
             return jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2
             
