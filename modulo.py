@@ -22,6 +22,7 @@ nuvem = [pygame.transform.scale(pygame.image.load("imagens/nuvem01.png"),(100,10
          pygame.transform.scale(pygame.image.load("imagens/nuvem09.png"),(100,100)),
          pygame.transform.scale(pygame.image.load("imagens/nuvem10.png"),(100,100)),]
 
+
 def construir_grid(tela,largura,repeticao,barcos = []):
     coordenadas = []
     for barco in barcos:

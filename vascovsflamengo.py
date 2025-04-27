@@ -11,10 +11,10 @@ def main():
     pygame.init()
     
 
-    musica_menu=pygame.mixer.music.load("audio/musica_fundo.mp3")
-    #musica_jogo=pygame.mixer.music.load("musica_fundo_jogo.mp3")
-    bomba_agua=pygame.mixer.Sound("audio/acerto_agua.mp3")
-    bomba_barco=pygame.mixer.Sound("audio/acerto_barco.mp3")
+    
+    
+    
+    
     
 
 
@@ -33,15 +33,10 @@ def main():
     relogio = pygame.time.Clock()
     tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_fundo_menu.png"),(1000,1000)),(0,0))
     pygame.display.flip()
-
+    pygame.mixer.music.load("audio/musica_fundo.mp3")
+    pygame.mixer.music.play(0)
     fonte = pygame.font.SysFont("Britannic Bold", 105)
-    barco1=pygame.image.load("imagens/barco1.png")
-    barco2_v=pygame.image.load("imagens/barco2_v.png")
-    barco2_h=pygame.image.load("imagens/barco2_h.png")
-    barco3_v=pygame.image.load("imagens/barco3_v.png")
-    barco3_h=pygame.image.load("imagens/barco3_h.png")
-    barco4_h=pygame.image.load("imagens/barco4_h.png")
-    barco4_v=pygame.image.load("imagens/barco4_h.png")
+    
     
 
 
@@ -49,7 +44,6 @@ def main():
 
     
     while True:
-        pygame.mixer.music.play(-1)
         relogio.tick(60)
         for event in pygame.event.get():#sair 
             if event.type== QUIT:
@@ -71,6 +65,8 @@ def main():
                     tela.fill((0,0,255))
                     construir_grid(tela, 1000,0)
                     pygame.display.flip
+                    pygame.mixer.music.load("audio/musica_planos.mp3")
+                    pygame.mixer.music.play()
                     jogar = 1
 
                     
@@ -101,7 +97,9 @@ def main():
                     transicao = pygame.USEREVENT + cont_transicoes
                     pygame.time.set_timer(transicao,3000,1)
                     cont_transicoes +=1
-                    pygame.display.flip             
+                    pygame.display.flip()
+                    pygame.mixer.music.load("audio/musica_fundo.mp3")   
+                    pygame.mixer.music.play(0)         
                     jogar = 2
 
                 
@@ -114,22 +112,29 @@ def main():
                     while vencedor == "?":
                         jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2 = turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2)
 
-                        
                     
                         if len(condicaoJ1) == 10:
                             vencedor = "jogador1"
-                        
+                            transicao = pygame.USEREVENT + cont_transicoes
+                            pygame.time.set_timer(transicao, 5000,1)
+                            cont_transicoes +=1
                         
                         if len(condicaoJ2) == 10:
-                            vencedor = "jogador2" 
+                            vencedor = "jogador2"
+                            transicao = pygame.USEREVENT + cont_transicoes
+                            pygame.time.set_timer(transicao, 5000,1)
+                            cont_transicoes +=1
+
                 if vencedor != "?":
                     texto_vitoria=fonte.render(f"{vencedor}",True,(100,50,255))
                     tela.blit(pygame.transform.scale(pygame.image.load("imagens/fundo_parabéns.png"),(1000,1000)),(0,0))
                     pygame.display.flip()
                     tela.blit(texto_vitoria,(330,450))
                     pygame.display.flip()
-                    pygame.time.delay(5000)
-                    jogar = 3
+                    
+
+                    if event.type == transicao:
+                        jogar = 3
             
             if jogar==3:
                 tela.blit(pygame.transform.scale(pygame.image.load("imagens/tela_creditos.png"),(1000,1000)),(0,0))

@@ -1,28 +1,32 @@
 import pygame
-from modulo import construir_grid,barco1,barco2_v,barco2_h,barco3_v,barco3_h,barco4_h,barco4_v,mar,nuvem
+from modulo import construir_grid,mar,nuvem
+
+pygame.mixer.init()
+bomba_agua=pygame.mixer.Sound("audio/acerto_agua.mp3")
+bomba_barco=pygame.mixer.Sound("audio/acerto_barco.mp3")
 
 
-mar = [pygame.transform.scale(pygame.image.load("imagens/aguaspt01.png"),(100,100)),
-       pygame.transform.scale(pygame.image.load("imagens/aguaspt02.png"),(100,100)),
-       pygame.transform.scale(pygame.image.load("imagens/aguaspt03.png"),(100,100)),
-       pygame.transform.scale(pygame.image.load("imagens/aguaspt04.png"),(100,100))]
 
-def mapa(estado,marcados,repeticao):
-    construir_grid(pygame.display.get_surface(),1000,repeticao,estado)
+def mapa(estado,marcados,ciclo):
+    
     coordenadas = []
     for barco in estado:
         for lugar in barco:
             if lugar not in coordenadas:
                 coordenadas.append(lugar)
+    for lugar in marcados:
+        if lugar not in coordenadas:
+            pygame.display.get_surface().blit(mar[ciclo%4],(lugar[0]*100,lugar[1]*100))
+            coordenadas.append(lugar)
+    construir_grid(pygame.display.get_surface(),1000,ciclo,estado)
+    
     for x in range(10):
         for y in range(10):
             if (x,y) not in coordenadas:
                 pygame.display.get_surface().blit(nuvem[0],(x*100,y*100))
-                
-    for lugar in marcados:
-        if lugar not in coordenadas:
-            pygame.display.get_surface().blit(mar[repeticao%4],(lugar[0]*100,lugar[1]*100))
-    pygame.display.flip()
+
+    pygame.display.flip()                           
+    
         
 def ataque(posicao,condicao,marcados):
     timer = pygame.USEREVENT
@@ -30,7 +34,8 @@ def ataque(posicao,condicao,marcados):
     ciclo = 1
     for barco in condicao:
         if posicao in barco:
-            while ciclo < 10:
+            pygame.mixer.Sound.play(bomba_barco)
+            while ciclo < 15:
                 for event in pygame.event.get():
                 
                     if event.type == pygame.QUIT:
@@ -40,17 +45,17 @@ def ataque(posicao,condicao,marcados):
                     if event.type == timer:
                         for coord in barco:
                             pygame.display.get_surface().blit(mar[0],(coord[0]*100,coord[1]*100))
-                            pygame.display.get_surface().blit(nuvem[ciclo],(coord[0]*100,coord[1]*100))
+                            pygame.display.get_surface().blit(nuvem[int(ciclo//1.5)],(coord[0]*100,coord[1]*100))
                             pygame.display.flip()
                         ciclo+=1
             mapa(condicao,marcados,0)
-            while ciclo < 20:
+            while ciclo < 30:
                 for event in pygame.event.get():
                     if event.type == timer:
                         ciclo+=1
             return None
-    
-    while ciclo < 10:
+    pygame.mixer.Sound.play(bomba_agua)
+    while ciclo < 15:
         for event in pygame.event.get():
                 
                     if event.type == pygame.QUIT:
@@ -60,11 +65,11 @@ def ataque(posicao,condicao,marcados):
                     if event.type == timer:
                         
                         pygame.display.get_surface().blit(mar[0],(posicao[0]*100,posicao[1]*100))
-                        pygame.display.get_surface().blit(nuvem[ciclo],(posicao[0]*100,posicao[1]*100))
+                        pygame.display.get_surface().blit(nuvem[int(ciclo//1.5)],(posicao[0]*100,posicao[1]*100))
                         pygame.display.flip()
                         ciclo+=1
     mapa(condicao,marcados,0)
-    while ciclo < 20:
+    while ciclo < 30:
         for event in pygame.event.get():
             if event.type == timer:
                 ciclo+=1
@@ -81,11 +86,11 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
     
     transicao = pygame.USEREVENT
     cont_transicoes = 0
-    movimento = pygame.USEREVENT+1
-    pygame.time.set_timer(movimento, 100)
-    repeticao = 0
+    timer = pygame.USEREVENT+1
+    pygame.time.set_timer(timer, 100)
+    ciclo = 0
 
-    mapa(condicaoJ1,marcadosJ1,repeticao)
+    mapa(condicaoJ1,marcadosJ1,ciclo)
     pygame.display.flip()
     
     
@@ -94,14 +99,17 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
             if event.type== pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == movimento:
-                repeticao+=1
+            if event.type == timer:
+                ciclo+=1
             if vez and j1OK == False :
                 
                 posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
 
                 if posicao not in marcadosJ1:
-                    mapa(condicaoJ1,marcadosJ1,repeticao)
+
+                    
+
+                    mapa(condicaoJ1,marcadosJ1,ciclo)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
                     pygame.display.flip()
                     if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
@@ -126,14 +134,16 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
                         
                                                                
                         j1OK = True
+            
             if event.type == transicao and j1OK:
                 vez = not vez
                 construir_grid(pygame.display.get_surface(),1000,0,condicaoJ2)
+                mapa(condicaoJ2,marcadosJ2,ciclo)
                 pygame.display.flip()
             if not vez and not j2OK:
                 posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
                 if posicao not in marcadosJ2:
-                    mapa(condicaoJ2,marcadosJ2,repeticao)
+                    mapa(condicaoJ2,marcadosJ2,ciclo)
                     pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(posicao[0]*100,posicao[1]*100,100,100),(2))
                     pygame.display.flip()
                     if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
@@ -160,6 +170,10 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
             if event.type == transicao and j1OK and j2OK:
                 pygame.display.flip()
                 return jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2
+            
+            if event.type == pygame.KEYDOWN :               
+                        if event.key == pygame.K_f:
+                            return jogador1,jogador2,marcadosJ1,marcadosJ2,[0,0,0,0,0,0,0,0,0,0],condicaoJ2
                      
 
             
