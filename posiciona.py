@@ -1,13 +1,15 @@
 import pygame
 from modulo import construir_grid
 
-def marcar(x,y,tam,vertical):
+
+
+def marcar(x,y,tam,vertical,jogador,repeticao):
     if vertical:
-        construir_grid(pygame.display.get_surface(),1200)
+        construir_grid(pygame.display.get_surface(),1000,repeticao,jogador)
         pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(x*100,y*100,100,tam*100),(2))
         pygame.display.flip()
     else:
-        construir_grid(pygame.display.get_surface(),1200)
+        construir_grid(pygame.display.get_surface(),1000,repeticao,jogador)
         pygame.draw.rect(pygame.display.get_surface(),(255,0,0),(x*100,y*100,tam*100,100),(2))
         pygame.display.flip()
 
@@ -25,20 +27,16 @@ def colisaoY(marcados, posicao,tamanho):
             return True
     return False
 
-def colocarX(posX,posY,tam,img):
+def colocarX(posX,posY,tam):
     selecionados = []
     for x in range(posX,posX+tam):
-        selecionados.append((x,posY)) 
-    pygame.display.get_surface().blit(img,(posX*100,posY*100))
-    pygame.display.flip()
+        selecionados.append((x,posY))
     return selecionados
 
-def colocarY(posX,posY,tam,img):
+def colocarY(posX,posY,tam):
     selecionados = []
     for y in range(posY,posY+tam):
         selecionados.append((posX,y)) 
-    pygame.display.get_surface().blit(img,(posX*100,posY*100))
-    pygame.display.flip()
     return selecionados
     
 def posicionar( jogador=[]):
@@ -49,6 +47,10 @@ def posicionar( jogador=[]):
     barco3_h=pygame.image.load("imagens/barco3_h.png")
     barco4_h=pygame.image.load("imagens/barco4_h.png")
     barco4_v=pygame.image.load("imagens/barco4_v.png")
+
+    movimento = pygame.USEREVENT
+    pygame.time.set_timer(movimento, 100)
+    repeticao = 0
 
     marcados = []
     tamanho = 4
@@ -62,6 +64,8 @@ def posicionar( jogador=[]):
             if event.type== pygame.QUIT:
                 pygame.quit()
                 exit()
+            if event.type == movimento:
+                repeticao+=1
 
             if event.type == pygame.KEYDOWN :               
                 if event.key == pygame.K_x:
@@ -70,68 +74,51 @@ def posicionar( jogador=[]):
             posicao=(pygame.mouse.get_pos()[0]//100,pygame.mouse.get_pos()[1]//100)
             
             if vertical: 
-                if tamanho == 4:
-                    imagem = barco4_v
-                elif tamanho == 3:
-                    imagem = barco3_v
-                elif tamanho == 2:
-                    imagem = barco2_v
-                else:
-                    imagem = barco1
-
-                if posicao[0] >= 2 and not colisaoY(marcados,posicao,tamanho) and posicao[1]+tamanho <= 10 :
-                    marcar(posicao[0],posicao[1],tamanho,vertical)
+                
+                if not colisaoY(marcados,posicao,tamanho) and posicao[1]+tamanho <= 10 :
+                    marcar(posicao[0],posicao[1],tamanho,vertical,jogador,repeticao)
                     if event.type==pygame.MOUSEBUTTONDOWN:
-                        jogador.append(colocarY(posicao[0],posicao[1],tamanho,imagem))
+                        jogador.append(colocarY(posicao[0],posicao[1],tamanho))
                         if len(jogador) in [1,3,6]:
                             tamanho -=1
                         
                             
-                elif posicao[0] >=2 and posicao[1] in range(11-tamanho,11) and not colisaoY(marcados,(posicao[0],10-tamanho),tamanho) :
-                    marcar(posicao[0],10-tamanho,tamanho,vertical)
+                elif posicao[1] in range(11-tamanho,11) and not colisaoY(marcados,(posicao[0],10-tamanho),tamanho) :
+                    marcar(posicao[0],10-tamanho,tamanho,vertical,jogador,repeticao)
                     if event.type==pygame.MOUSEBUTTONDOWN:
-                        jogador.append(colocarY(posicao[0],10-tamanho,tamanho,imagem))
+                        jogador.append(colocarY(posicao[0],10-tamanho,tamanho))
                         if len(jogador) in [1,3,6]:
                             tamanho -=1
 
                 elif colisaoY(marcados,posicao,tamanho):
-                    construir_grid(pygame.display.get_surface(),1200)
+                    construir_grid(pygame.display.get_surface(),1000,repeticao,jogador)
                     pygame.display.flip()
 
             else:
-                if tamanho == 4:
-                    imagem = barco4_h
-                elif tamanho == 3:
-                    imagem = barco3_h
-                elif tamanho == 2:
-                    imagem = barco2_h
-                else:
-                    imagem = barco1
-
-                if posicao[0] in range(2,13-tamanho) and not colisaoX(marcados,posicao,tamanho) :
-                        marcar(posicao[0],posicao[1],tamanho,vertical)
+                
+                if not colisaoX(marcados,posicao,tamanho) and posicao[0] in range(11-tamanho) :
+                        marcar(posicao[0],posicao[1],tamanho,vertical,jogador,repeticao)
                         if event.type==pygame.MOUSEBUTTONDOWN:
-                            jogador.append(colocarX(posicao[0],posicao[1],tamanho,imagem))
+                            jogador.append(colocarX(posicao[0],posicao[1],tamanho))
                             if len(jogador) in [1,3,6]:
                                 tamanho -=1
                             
-                elif posicao[0] in range(13-tamanho,13) and not colisaoX(marcados,(12-tamanho,posicao[1]),tamanho):
-                    marcar(12-tamanho,posicao[1],tamanho,vertical)
+                elif posicao[0] in range(11-tamanho,11) and not colisaoX(marcados,(10-tamanho,posicao[1]),tamanho):
+                    marcar(10-tamanho,posicao[1],tamanho,vertical,jogador,repeticao)
                     if event.type==pygame.MOUSEBUTTONDOWN:#pegar a posição do mouse na tela
-                        jogador.append(colocarX(12-tamanho,posicao[1],tamanho,imagem))
+                        jogador.append(colocarX(10-tamanho,posicao[1],tamanho))
                         if len(jogador) in [1,3,6]:
                             tamanho -=1
                 elif colisaoX(marcados,posicao,tamanho):
-                    construir_grid(pygame.display.get_surface(),1200)
+                    construir_grid(pygame.display.get_surface(),1000,repeticao,jogador)
                     pygame.display.flip()
 
     return jogador
     
 if __name__ == "__main__":
     pygame.init()
-    tela=pygame.display.set_mode((1200,1000))#definição de tela
-    construir_grid(tela,1200)
-    tela.fill((0,0,255))
+    tela=pygame.display.set_mode((1000,1000))#definição de tela
+    construir_grid(tela,1000,0)
     pygame.display.flip()
     while True:
         for event in pygame.event.get():#sair 
