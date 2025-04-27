@@ -7,10 +7,12 @@ barco3_v=pygame.image.load("imagens/barco3_v.png")
 barco3_h=pygame.image.load("imagens/barco3_h.png")
 barco4_h=pygame.image.load("imagens/barco4_h.png")
 barco4_v=pygame.image.load("imagens/barco4_v.png")
+
 mar = [pygame.transform.scale(pygame.image.load("imagens/aguaspt01.png"),(100,100)),
     pygame.transform.scale(pygame.image.load("imagens/aguaspt02.png"),(100,100)),
     pygame.transform.scale(pygame.image.load("imagens/aguaspt03.png"),(100,100)),
     pygame.transform.scale(pygame.image.load("imagens/aguaspt04.png"),(100,100))]
+
 nuvem = [pygame.transform.scale(pygame.image.load("imagens/nuvem01.png"),(100,100)),
          pygame.transform.scale(pygame.image.load("imagens/nuvem02.png"),(100,100)),
          pygame.transform.scale(pygame.image.load("imagens/nuvem03.png"),(100,100)),
@@ -30,11 +32,11 @@ def construir_grid(tela,largura,repeticao,barcos = []):
             if lugar not in coordenadas:
                 coordenadas.append(lugar)
         
-    for xey in range(0,largura,100):
-        for i in range(0,largura,100):
+    for x in range(0,largura,100):
+        for y in range(0,largura,100):
             
-            tela.blit(mar[repeticao%4],(xey,i))
-            pygame.draw.rect(tela,(0,0,0),(xey,i,100,100),(2))
+            tela.blit(mar[repeticao%4],(x,y))
+            pygame.draw.rect(tela,(0,0,0),(x,y,100,100),(2))
 
     if len(barcos) > 0:
         for barco in barcos:
