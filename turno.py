@@ -162,9 +162,7 @@ def turno(jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2):
             if event.type == transicao and j1OK and j2OK:
                 return jogador1,jogador2,marcadosJ1,marcadosJ2,condicaoJ1,condicaoJ2
             
-            if event.type == pygame.KEYDOWN :               
-                    if event.key == pygame.K_f:
-                        return jogador1,jogador2,marcadosJ1,marcadosJ2,[1,1,1,1,1,1,1,1,1,1],condicaoJ2
+        
             
                      
 
